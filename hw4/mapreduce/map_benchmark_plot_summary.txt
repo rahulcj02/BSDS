@@ -1,0 +1,7 @@
+avg_sequential_ms=785.60
+stdev_sequential_ms=65.36
+avg_parallel_ms=299.60
+stdev_parallel_ms=43.34
+speedup=2.62x
+runs=10
+ 
