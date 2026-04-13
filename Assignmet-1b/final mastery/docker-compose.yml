@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: albumuser
+      POSTGRES_PASSWORD: albumpass
+      POSTGRES_DB: albumstore
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://albumuser:albumpass@db:5432/albumstore?sslmode=disable
+      S3_BUCKET: ${S3_BUCKET}
+      AWS_REGION: ${AWS_REGION:-us-west-2}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      BASE_URL: ${BASE_URL:-http://localhost:8080}
+      PORT: "8080"
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
